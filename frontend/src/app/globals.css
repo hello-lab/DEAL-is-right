@@ -452,7 +452,7 @@ align-items: flex-start;
   right: 5vw;
   position: absolute;
   display: none;
-  background-color: #3d884e;
+  background-color: #71b1b9;
   border-style: solid;
   border-color: #000;
   border-width: 10px;
@@ -537,8 +537,7 @@ align-items: flex-start;
     border-radius: 2ch;
   }
   .logo{
-    width: 50vw;
-height: 5vh;
+
 position: relative;
 left:2vw;
   }

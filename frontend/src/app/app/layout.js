@@ -43,9 +43,9 @@ export default function RootLayout({ children }) {
 
     return (
         <div style={{ padding: '20px' }}>
-            <header style={{ fontWeight:"bold",display: 'flex', marginBottom: '20px' }}>
-                <img className="logo" src="/loo.png" alt="Logo" style={{ borderRadius:'1vh', marginRight: '10px' }} />
-                <button style={{borderRadius:'0.5vh'}} className="hamburger-menu" onClick={toggleMenu}>
+            <header style={{ fontWeight:"bold",display: 'flex'}}>
+                <div className=" w-[20vw] sm:w-[10vw] mr-40"><img src="/logo.png" className="logo"  alt="Logo" style={{ borderRadius:'1vh', marginRight: '10vw',width:"100%",height:"100%"}} />
+                </div><button style={{bor50derRadius:'0.5vh'}} className="hamburger-menu" onClick={toggleMenu}>
                     <span className="hamburger-icon"></span>
                 </button>
             

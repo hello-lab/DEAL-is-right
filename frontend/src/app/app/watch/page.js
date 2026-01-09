@@ -6,7 +6,7 @@ export default function PhonePage() {
 	const [phones, setPhones] = useState([]);
 	const router = useRouter();
 	useEffect(() => {
-		fetch('http://127.0.0.1:8000/analytics')
+		fetch('http://localhost:3000/app/home/analytics')
 			.then(res => res.json())
 			.then(data => {
 				if (Array.isArray(data.analytics)) {

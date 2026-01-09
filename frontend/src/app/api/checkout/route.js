@@ -1,6 +1,7 @@
-import db from '@/lib/db';
-import { getCart, clearCart } from '@/lib/cartDb';
+import db from '../../db/db';
+import { getCart, clearCart } from '../../db/cartDb';
 import { NextResponse } from 'next/server';
+import transactionDb from '../../db/transactionDb';
 
 export async function POST(req) {
   const { username } = await req.json();
@@ -33,7 +34,8 @@ export async function POST(req) {
 
   db.prepare(`UPDATE users SET balance = ?, transactions = ? WHERE username = ?`)
     .run(newBalance, transactions, username);
-
+ transactionDb.prepare('INSERT INTO transactions (userId, amount, type, date,remarks) VALUES (?, ?, ?, ?,?)')
+                .run(username, total, "purchase", new Date().toISOString(),"bought an item");
   clearCart(username);
 
   return NextResponse.json({ success: true, newBalance });

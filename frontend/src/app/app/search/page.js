@@ -56,7 +56,7 @@ export default function SearchPage() {
                 console.log(lastWord);
 				// Fetch data from server using lastWord
 				if (lastWord) {
-					const res = await fetch('http://localhost:3000/app/home/analytics');
+					const res = await fetch('http://localhost:8000/analytics');
 					const data = await res.json();
 					if (Array.isArray(data.analytics)) {
 						// Filter results by lastWord in type or product_name

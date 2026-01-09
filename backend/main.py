@@ -436,8 +436,8 @@ def product_by_id(id: str = Body(..., embed=True)):
     payload = {
         "token": PRICEAPI_TOKEN,
         "country": "in",
-        "source": "google_shopping",
-        "topic": "product_specs",
+        "source": "amazon",
+        "topic": "product",
         "key": "id",
         "max_age": "43200",
         "values": id,

@@ -33,9 +33,9 @@ export default function SearchPage() {
 			setSearchLoading(true);
 			try {
 				// Use the correct Gemini model and your API key
-				const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyA_mFSLuNJ_AadK6BEAfgU8xEkGWMkjG00", {
+				const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: { "Content-Type": "application/json","X-goog-api-key":"APIKEY" },
 					body: JSON.stringify({ contents: [{ parts: [{ text: (searchInput+".you are the dealgenie. based on the first sentence, recommend products, you may inquire about more specifications ,but keep it brief. do not use any markdown formatting , you may keep bullet points, also read the first sentance and return one of the following keywords at the end you your reply-phone,headphones,laptop,speakers,smart watches") }] }] })
 				});
 				const result = await response.json();

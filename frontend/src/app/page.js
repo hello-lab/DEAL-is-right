@@ -54,22 +54,22 @@ export default function Home() {
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] relative"
-      style={{ overflowX: 'hidden', overflowY: 'hidden' }}
+      style={{ overflowX: 'hidden', overflowY: 'hidden', background: '#b8e0e0ff' }}
     >
-      <div style={{ width: '100%', height: '800px', position: 'absolute', zIndex: 0 }}>
+      <div className='w-auto h-[80px]' style={{ zIndex:"13",position: 'absolute', zIndex: 0 }}>
         <Orb
-          hoverIntensity={0.5}
+          hoverIntensity={0.3}
           rotateOnHover={true}
-          hue={70}
+          hue={30}
           forceHoverState={false}
         />
       </div>
 
-      <main className="flex flex-col gap-8 items-center justify-center" style={{ zIndex: 1, position: 'relative', borderRadius: '50%', height: '80vh', width: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center',background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' }}>
+      <main className="flex flex-col items-center justify-center top-0" style={{ zIndex: 0, position: 'relative', borderRadius: '50%', height: '80vh', width: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center',background: 'rgba(182, 201, 202, 0)', backdropFilter: 'blur(10px)' }}>
         <img
           src="/logo.png"
           alt="Next.js logo"
-          style={{ width: '45vh', height: 'auto', borderRadius: '20px', display: 'block', margin: '0 auto' }}
+          style={{ width: '42vh', height: 'auto', borderRadius: '20px', display: 'block', margin: '0 auto' }}
           priorty="true"
         />
         <ol className="list-inside list-decimal text-sm text-center font-[family-name:var(--font-geist-mono)] flex flex-col items-center justify-center">
@@ -77,7 +77,7 @@ export default function Home() {
         </ol>
 
         <div className="flex flex-col items-center justify-center w-full">
-          <form className="flex flex-col gap-4 items-center justify-center w-full">
+          <form className="flex flex-col items-center justify-center w-full">
             <input
               type="text"
               style={{ color: 'black', borderRadius: '12px', width: '320px' }}

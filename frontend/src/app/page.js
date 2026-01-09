@@ -56,7 +56,7 @@ export default function Home() {
       className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] relative"
       style={{ overflowX: 'hidden', overflowY: 'hidden', background: '#b8e0e0ff' }}
     >
-      <div className='w-auto h-[80px]' style={{ zIndex:"13",position: 'absolute', zIndex: 0 }}>
+      <div  className="scale-150 sm:scale-100" style={{ zIndex:"13",position: 'absolute',height: '100%', width: '100%', zIndex: 0 }}>
         <Orb
           hoverIntensity={0.3}
           rotateOnHover={true}

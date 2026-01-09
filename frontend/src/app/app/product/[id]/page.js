@@ -18,7 +18,7 @@ export default function Page() {
   useEffect(() => {
     async function fetchProduct() {
       setLoading(true);
-      const res = await fetch(`http://127.0.0.1:8000/product_by_id`, {
+      const res = await fetch(`http://localhost:3000/app/home/product_by_id`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
@@ -77,7 +77,7 @@ export default function Page() {
   async function finalOffer() {
     setfn(true);
     try {
-      const response = await fetch(`http://127.0.0.1:8000/competitive_price/${id}`);
+      const response = await fetch(`http://localhost:3000/app/home/competitive_price/${id}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

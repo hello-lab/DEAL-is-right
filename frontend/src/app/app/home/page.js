@@ -14,7 +14,7 @@ const HomePage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
 useEffect(() => {
-  fetch('http://127.0.0.1:8000/analytics')
+  fetch('http://localhost:3000/app/home/analytics')
     .then(response => response.json())
     .then(data => {
       if (Array.isArray(data.analytics)) {
@@ -62,11 +62,20 @@ useEffect(() => {
       setSearchLoading(true);
       try {
         // Call Gemini API with correct model name
-        const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ parts: [{ text: (searchInput+".you are the dealgenie. based on the first sentence, recommend products, you may inquire about more specifications ,but keep it brief. do not use any markdown formatting , you may keep bullet points, also read the first sentance and return one of the following keywords at the end you your reply-phone,headphones,laptop,speakers,smart watches") }] }] })
-        });
+        const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
+					method: "POST",
+					headers: {
+						"x-goog-api-key": "AIzaSyB_Ip9qDaZvY0xPY7MWF_Y642AYJ7_QA-8",
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						contents: [{
+							parts: [{
+								text: searchInput + ".you are the dealMachine. based on the first sentence, recommend products, you may inquire about more specifications ,but keep it brief. do not use any markdown formatting , you may keep bullet points, also read the first sentance and return one of the following keywords at the end you your reply-phone,headphones,laptop,speakers,smart watches"
+							}]
+						}]
+					})
+				});
         const result = await response.json();
         // Pass response to search page via router (use query param or localStorage)
         router.push(`/app/search?pageResponse=${encodeURIComponent(JSON.stringify(result))}`);

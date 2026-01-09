@@ -35,8 +35,17 @@ export default function SearchPage() {
 				// Use the correct Gemini model and your API key
 				const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
 					method: "POST",
-					headers: { "Content-Type": "application/json","X-goog-api-key":"APIKEY" },
-					body: JSON.stringify({ contents: [{ parts: [{ text: (searchInput+".you are the dealgenie. based on the first sentence, recommend products, you may inquire about more specifications ,but keep it brief. do not use any markdown formatting , you may keep bullet points, also read the first sentance and return one of the following keywords at the end you your reply-phone,headphones,laptop,speakers,smart watches") }] }] })
+					headers: {
+						"x-goog-api-key": "AIzaSyB_Ip9qDaZvY0xPY7MWF_Y642AYJ7_QA-8",
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						contents: [{
+							parts: [{
+								text: searchInput + ".you are the dealMachine. based on the first sentence, recommend products, you may inquire about more specifications ,but keep it brief. do not use any markdown formatting , you may keep bullet points, also read the first sentance and return one of the following keywords at the end you your reply-phone,headphones,laptop,speakers,smart watches"
+							}]
+						}]
+					})
 				});
 				const result = await response.json();
 				const geminiText = result?.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(result);
@@ -47,7 +56,7 @@ export default function SearchPage() {
                 console.log(lastWord);
 				// Fetch data from server using lastWord
 				if (lastWord) {
-					const res = await fetch('http://127.0.0.1:8000/analytics');
+					const res = await fetch('http://localhost:3000/app/home/analytics');
 					const data = await res.json();
 					if (Array.isArray(data.analytics)) {
 						// Filter results by lastWord in type or product_name
@@ -69,7 +78,7 @@ export default function SearchPage() {
 					setGridResults([]);
 				}
 			} catch (err) {
-				setResponseText("Error fetching Gemini response.");
+				//setResponseText("Error fetching Gemini response.");
 				setGridResults([]);
 			}
 			setSearchLoading(false);

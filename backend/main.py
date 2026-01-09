@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException, Body, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+from requests.structures import CaseInsensitiveDict
+
 from pydantic import BaseModel, Field
 import os
 import time
@@ -293,14 +295,22 @@ PRODUCTS_TO_TRACK = [
 ]
 
 def periodic_ingest():
+    # Allow server to finish binding the port
+    time.sleep(5)
     while True:
         for pname in PRODUCTS_TO_TRACK:
             try:
                 print(f"[Periodic Ingest] Ingesting: {pname}")
-                requests.post("http://localhost:8000/ingest_product", json={"product_name": pname})
+                requests.post(
+                    "http://localhost:8000/ingest_product",
+                    json={"product_name": pname},
+                    timeout=30,
+                )
             except Exception as e:
                 print(f"[Periodic Ingest] Error for {pname}: {e}")
         time.sleep(3600)  # every hour
+
+# Start periodic ingestion when FastAPI app starts
 
 
 # --- Models ---
@@ -331,7 +341,6 @@ class DemandForecast(BaseModel):
 @app.post('/ingest_product')
 def ingest_product(data: ProductIngestRequest):
     product_name = data.product_name
-
     url = "https://api.priceapi.com/v2/jobs"
     payload = {
         "token": PRICEAPI_TOKEN,
@@ -341,14 +350,23 @@ def ingest_product(data: ProductIngestRequest):
         "key": "term",
         "max_age": "43200",
         "max_pages": "9",
-        "sort_by": "ranking_descending",
-        "condition": "new",
+        "sort_by": "relevance_descending",
         "values": product_name
     }
 
-    resp = requests.post(url, data=payload)
+    try:
+        resp = requests.post(url, json=payload, timeout=300)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"PriceAPI request error: {e}")
     if not resp.ok:
-        raise HTTPException(status_code=500, detail="PriceAPI request failed")
+        # Fallback to google_shopping if amazon fails
+        payload["source"] = "google_shopping"
+        try:
+            resp = requests.post(url, json=payload, timeout=30)
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"PriceAPI fallback error: {e}")
+        if not resp.ok:
+            raise HTTPException(status_code=500, detail=f"PriceAPI request failed: {resp.status_code} {resp.text}")
 
     job = resp.json()
     job_id = job.get("job_id")
@@ -357,7 +375,7 @@ def ingest_product(data: ProductIngestRequest):
 
     result_url = f"https://api.priceapi.com/v2/jobs/{job_id}/download.json?token={PRICEAPI_TOKEN}"
     for _ in range(30):
-        r = requests.get(result_url)
+        r = requests.get(result_url, timeout=300)
         if r.status_code == 200 and r.headers.get("content-type", "").startswith("application/json"):
             data = r.json()
             if data.get("results"):
